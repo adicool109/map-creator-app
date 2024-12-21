@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Creator</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="map-container" style="display: block;">
+            <div id="map"></div>
+            <div class="controls">
+                <button id="captureBtn">Capture Map</button>
+            </div>
+            <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                <span class="loading-spinner"></span>
+                <p>Capturing map...</p>
+            </div>
+        </div>
+        <div class="editor-container" style="display: none;">
+            <canvas id="editCanvas"></canvas>
+            <div class="paint-controls">
+                <div class="tools-section">
+                    <div class="tool-group">
+                        <button class="tool-btn" data-tool="brush" title="Brush Tool (B)"><i class="fas fa-paint-brush"></i></button>
+                        <button class="tool-btn" data-tool="eraser" title="Eraser Tool (E)"><i class="fas fa-eraser"></i></button>
+                        <button class="tool-btn" data-tool="rectangle" title="Rectangle Tool (R)"><i class="far fa-square"></i></button>
+                        <button class="tool-btn" data-tool="circle" title="Circle Tool (C)"><i class="far fa-circle"></i></button>
+                        <button class="tool-btn" data-tool="line" title="Line Tool (L)"><i class="fas fa-slash"></i></button>
+                        <button class="tool-btn" data-tool="text" title="Text Tool (T)"><i class="fas fa-font"></i></button>
+                        <button class="tool-btn" data-tool="fill" title="Fill Tool (F)"><i class="fas fa-fill-drip"></i></button>
+                    </div>
+                    <div class="brush-settings">
+                        <label>Size:</label>
+                        <input type="range" id="brushSize" min="1" max="50" value="5">
+                        <label>Opacity:</label>
+                        <input type="range" id="brushOpacity" min="0" max="100" value="100">
+                    </div>
+                    <div class="color-picker">
+                        <input type="color" id="colorPicker" value="#ff0000">
+                        <div class="color-presets">
+                            <button class="color-preset" style="background: #ff0000"></button>
+                            <button class="color-preset" style="background: #00ff00"></button>
+                            <button class="color-preset" style="background: #0000ff"></button>
+                            <button class="color-preset" style="background: #ffff00"></button>
+                            <button class="color-preset" style="background: #000000"></button>
+                            <button class="color-preset" style="background: #ffffff"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="image-controls">
+                    <div class="control-group">
+                        <label>Brightness</label>
+                        <input type="range" id="brightness" min="-100" max="100" value="0">
+                    </div>
+                    <div class="control-group">
+                        <label>Contrast</label>
+                        <input type="range" id="contrast" min="-100" max="100" value="0">
+                    </div>
+                    <div class="control-group">
+                        <label>Saturation</label>
+                        <input type="range" id="saturation" min="-100" max="100" value="0">
+                    </div>
+                    <div class="filter-section">
+                        <div class="control-group">
+                            <label>Filters</label>
+                            <select id="imageFilter">
+                                <option value="none">None</option>
+                                <option value="grayscale">Grayscale</option>
+                                <option value="sepia">Sepia</option>
+                                <option value="invert">Invert</option>
+                            </select>
+                        </div>
+                        <button id="resetFilters">Reset Filters</button>
+                    </div>
+                </div>
+                <div class="text-controls" style="display: none;">
+                    <select id="fontFamily">
+                        <option value="Arial">Arial</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Georgia">Georgia</option>
+                    </select>
+                    <select id="fontSize">
+                        <option value="12">12px</option>
+                        <option value="16">16px</option>
+                        <option value="20">20px</option>
+                        <option value="24">24px</option>
+                        <option value="32">32px</option>
+                        <option value="48">48px</option>
+                    </select>
+                    <div class="text-style-buttons">
+                        <button id="boldText" title="Bold"><i class="fas fa-bold"></i></button>
+                        <button id="italicText" title="Italic"><i class="fas fa-italic"></i></button>
+                    </div>
+                </div>
+                <div class="undo-redo-clear">
+                    <button id="undoBtn" title="Undo"><i class="fas fa-undo"></i></button>
+                    <button id="redoBtn" title="Redo"><i class="fas fa-redo"></i></button>
+                    <button id="clearBtn" title="Clear"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            <div class="bottom-controls">
+                <button id="backBtn">Back to Map</button>
+                <button id="downloadBtn">Download Map</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    padding: 20px;
+}
+
+.map-container {
+    width: 100%;
+    height: calc(100vh - 40px);
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: white;
+}
+
+#clip-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    cursor: crosshair;
+}
+
+.controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
+    display: flex;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+    background-color: #45a049;
+}
+
+.editor-container {
+    width: 100%;
+    height: calc(100vh - 40px);
+    position: relative;
+    display: none;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 20px;
+}
+
+#editCanvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    cursor: crosshair;
+    object-fit: contain;
+    background-color: #f5f5f5;
+}
+
+.paint-controls {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tools-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tool-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.tool-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.tool-btn i {
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.tool-btn:hover {
+    background: #f0f0f0;
+    border-color: #999;
+}
+
+.tool-btn.active {
+    background: #4CAF50;
+    border-color: #45a049;
+    color: white;
+}
+
+.tool-btn.active i {
+    color: white;
+}
+
+.tool-btn[title]::before {
+    content: attr(title);
+    position: absolute;
+    bottom: calc(100% + 5px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 12px;
+    white-space: nowrap;
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 1000;
+}
+
+.tool-btn[title]::after {
+    content: '';
+    position: absolute;
+    bottom: calc(100% - 1px);
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 1000;
+}
+
+.tool-btn[title]:hover::before,
+.tool-btn[title]:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tool-btn[title].active:hover::before {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.brush-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.brush-settings label {
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 14px;
+}
+
+.brush-settings input[type="range"] {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.color-picker {
+    margin-top: 10px;
+}
+
+.color-presets {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.color-preset {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.color-preset:hover {
+    transform: scale(1.1);
+}
+
+input[type="color"] {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 2px;
+}
+
+.text-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.text-controls select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.text-style-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.text-style-buttons button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.text-style-buttons button.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#undoBtn, #redoBtn {
+    width: 40px;
+    padding: 8px 0;
+}
+
+.bottom-controls {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    display: flex;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.bottom-controls button {
+    padding: 8px 16px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.bottom-controls button:hover {
+    background: #45a049;
+}
+
+#captureBtn, #downloadBtn {
+    padding: 8px 16px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#captureBtn:hover, #downloadBtn:hover {
+    background: #45a049;
+}
+
+/* Add grey tint to map tiles */
+.leaflet-tile-pane {
+    filter: brightness(0.9) contrast(0.9) saturate(0.9);
+    -webkit-filter: brightness(0.9) contrast(0.9) saturate(0.9);
+}
+
+/* Ensure Leaflet controls are visible */
+.leaflet-control-container {
+    z-index: 1000;
+}
+
+.leaflet-control-zoom {
+    margin: 20px !important;
+}
+
+/* Hide attribution control */
+.leaflet-control-attribution {
+    display: none !important;
+}
+
+/* Control groups spacing */
+.control-group {
+    margin-bottom: 20px;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 14px;
+}
+
+.control-group input[type="range"] {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+/* Reset and action buttons */
+#resetFilters {
+    width: 100%;
+    padding: 10px;
+    margin: 20px 0;
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+#resetFilters:hover {
+    background: #d32f2f;
+}
+
+/* Action buttons container */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.action-buttons button {
+    padding: 8px 12px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.action-buttons button:hover {
+    background: #45a049;
+    transform: translateY(-1px);
+}
+
+/* Undo/Redo/Clear buttons */
+.undo-redo-clear {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.undo-redo-clear button {
+    flex: 1;
+    padding: 8px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.undo-redo-clear button:hover {
+    background: #45a049;
+}
+
+/* Filter section spacing */
+.filter-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+/* Loading indicator */
+.loading-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1000;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-indicator p {
+    margin: 0;
+    color: #333;
+    font-size: 14px;
+}
