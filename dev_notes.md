@@ -15,9 +15,10 @@ Current status:
 
 Digital Vedic library:
 -----------------------
-https://snazzymaps.com/
-https://github.com/atmist/snazzy-info-window
-mymaps.google.com
-http://ancientvoice.wikidot.com/bharatavarsha
+- https://snazzymaps.com/
+- https://github.com/atmist/snazzy-info-window
+- mymaps.google.com
+- http://ancientvoice.wikidot.com/bharatavarsha
 
+e.g.
 <iframe src="https://snazzymaps.com/embed/661040" width="100%" height="600px" style="border:none;"></iframe>
